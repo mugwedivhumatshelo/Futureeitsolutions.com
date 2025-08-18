@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register | Futuree IT Solutions</title>
+  <link rel="icon" href="img/hi (1).png" type="image/png">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    /* Header */
+.main-header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 45px;
+  width: auto;
+  transform: translateY(20px);
+  animation: slide-in 1s ease forwards;
+  animation-delay: 0.3s;
+}
+.site-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+  white-space: nowrap;
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ff2e2e;
+}
+
+/* Mobile Toggle Button */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu-toggle span {
+  height: 3px;
+  width: 100%;
+  background: #ff2e2e;
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    border-top: 1px solid #ddd;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+}
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+}
+  /* Register Form Styles */
+    .register-box {
+      background: #2b2828;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 320px;
+      margin: 60px auto;
+    }
+    a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover, a:focus {
+      color: #ff3e3e;
+      outline: none;
+    }
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #ff2e2e;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff3636;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #000000;
+    }
+
+    .extra {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .extra a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    footer.footer {
+      background: #222;
+      color: #eee;
+      padding: 30px 20px 10px;
+      font-size: 0.9rem;
+      user-select: none;
+      margin-top: auto;
+    }
+
+    .footer-section {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .footer-section.left ul {
+      display: flex;
+      gap: 20px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .footer-section.left ul li a {
+      color: #ccc;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section.left ul li a:hover,
+    .footer-section.left ul li a:focus {
+      color: #ff2e2e;
+      outline: none;
+    }
+
+    .footer-section.center,
+    .footer-section.right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #ddd;
+      justify-content: center;
+    }
+
+    .social-icon {
+      color: #ffffff;
+      font-size: 1.8rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-icon:hover, .social-icon:focus {
+      color: hsl(0, 100%, 58%);
+      outline: none;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #444;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #999;
+      user-select: none;
+    }
+  </style>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2lyHJnzCJ3SQ_F0c6fI93x9zQ44ctqTc",
+      authDomain: "login-auth-d702f.firebaseapp.com",
+      projectId: "login-auth-d702f",
+      storageBucket: "login-auth-d702f.appspot.com",
+      messagingSenderId: "562569000961",
+      appId: "1:562569000961:web:0952a9f12b6b8a6c1e6800"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const registerForm = document.getElementById("registerForm");
+
+      registerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            alert("Registration successful!");
+            window.location.href = "shop.html";
+          })
+          .catch((err) => alert("Registration failed: " + err.message));
+      });
+
+      // Hamburger menu functionality
+      const menuToggleBtn = document.getElementById('menuToggleBtn');
+      const navLinks = document.getElementById('nav-links');
+
+      menuToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+        menuToggleBtn.setAttribute('aria-expanded', !expanded);
+        navLinks.classList.toggle('open');
+        navLinks.classList.toggle('open'); // toggle mobile slide too
+        navLinks.classList.toggle('open'); // ensure it triggers both animations
+      });
+
+      // Close on link click
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          menuToggleBtn.setAttribute('aria-expanded', false);
+        });
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!navLinks.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+          navLinks.classList.remove('open');
+          menuToggleBtn.setAttribute('aria-expanded', false);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <!-- Header -->
+<header class="main-header">
+  <div class="nav-container">
+    <div class="logo-title">
+      <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+      <span class="site-title">Futuree IT Solutions</span>
+    </div>
+
+    <nav role="navigation" aria-label="Main Navigation">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Shop</a></li>
+        <li><a href="explore.html">Explore Projects</a></li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-links"
+      id="menuToggleBtn"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+  <div class="register-box">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Register</button>
+    </form>
+    <div class="extra">
+      <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-section left">
+      <ul>
+        <li><a href="Privacy.html">Privacy</a></li>
+        <li><a href="Terms of service.html">Terms</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-section center">
+      <p>Request a Quote:</p>
+      <a href="https://api.whatsapp.com/send?phone=0723386439" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp-square"></i>
+      </a>
+    </div>
+    <div class="footer-section right">
+      <p>Follow Us:</p>
+      <a href="https://twitter.com/FutureeITSoltns" class="social-icon twitter" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+        <i class="fab fa-twitter-square"></i>
+      </a>
+      <a href="https://linkedin.com/in/vhumatshelo-mugwedi-9540631a4" class="social-icon linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://facebook.com/FutureeI.Tsolutions2021" class="social-icon facebook" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <i class="fab fa-facebook-square"></i>
+      </a>
+      <a href="https://instagram.com/futureei.tsolutions/" class="social-icon instagram" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <i class="fab fa-instagram-square"></i>
+      </a>
+      <a href="https://youtube.com/channel/UC19Yvp1RCWXL54iKGkfM1oQ" class="social-icon youtube" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Futuree IT Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

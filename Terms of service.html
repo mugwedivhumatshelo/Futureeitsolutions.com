@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms of Service - Futuree IT Solutions</title>
+  <link rel="stylesheet" href="info-style.css">
+  <link rel="icon" href="img/hi (1).png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+</head>
+<body>
+<!-- Header -->
+<header class="main-header">
+  <div class="nav-container">
+    <div class="logo-title">
+      <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+      <span class="site-title">Futuree IT Solutions</span>
+    </div>
+
+    <nav role="navigation" aria-label="Main Navigation">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Shop</a></li>
+        <li><a href="explore.html">Explore Projects</a></li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-links"
+      id="menuToggleBtn"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+<section class="about">
+  <h2>Terms of Service</h2>
+  <div class="info">
+    <p>
+      By using Futuree IT Solutions’ services, you agree to comply with the following terms and conditions:
+    </p>
+    <ul>
+      <li><strong>Service Scope:</strong> We offer IT support, repairs, printing, graphic design, and more as described on our website.</li>
+      <li><strong>Payments:</strong> All payments must be made in full before delivery or completion of services unless otherwise agreed.</li>
+      <li><strong>Warranties:</strong> Certain repair services come with limited warranties. Please request warranty details for applicable services.</li>
+      <li><strong>Liability:</strong> Futuree IT Solutions is not responsible for data loss or damage during repairs unless caused by proven negligence.</li>
+      <li><strong>Refunds:</strong> Refunds are handled on a case-by-case basis. If you are not satisfied, please contact us within 7 days of service.</li>
+    </ul>
+    <p>These terms may change without prior notice. Continued use of our services indicates acceptance of the updated terms.</p>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+    <div class="footer-section left">
+      <ul>
+        <li><a href="Privacy.html">Privacy</a></li>
+        <li><a href="Terms of service.html">Terms</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section center">
+      <p>Request a Quote:</p>
+      <a
+        href="https://api.whatsapp.com/send?phone=0723386439"
+        class="social-icon whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+      >
+        <i class="fab fa-whatsapp-square"></i>
+      </a>
+    </div>
+
+    <div class="footer-section right">
+      <p>Follow Us:</p>
+      <a
+        href="https://twitter.com/FutureeITSoltns"
+        class="social-icon twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Twitter"
+      >
+        <i class="fab fa-twitter-square"></i>
+      </a>
+      <a
+        href="https://linkedin.com/in/vhumatshelo-mugwedi-9540631a4"
+        class="social-icon linkedin"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+      >
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a
+        href="https://facebook.com/FutureeI.Tsolutions2021"
+        class="social-icon facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Facebook"
+      >
+        <i class="fab fa-facebook-square"></i>
+      </a>
+      <a
+        href="https://instagram.com/futureei.tsolutions/"
+        class="social-icon instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <i class="fab fa-instagram-square"></i>
+      </a>
+      <a
+        href="https://youtube.com/channel/UC19Yvp1RCWXL54iKGkfM1oQ"
+        class="social-icon youtube"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube"
+      >
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Futuree IT Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+    // Hamburger menu toggle
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navLinks = document.getElementById('nav-links');
+
+    // Toggle open/close on button click
+    menuToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent the click from bubbling to document
+    const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+    menuToggleBtn.setAttribute('aria-expanded', !expanded);
+    navLinks.classList.toggle('open');
+  });
+
+    // Close menu when clicking any nav link
+    navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuToggleBtn.setAttribute('aria-expanded', false);
+  });
+});
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+    navLinks.classList.remove('open');
+    menuToggleBtn.setAttribute('aria-expanded', false);
+  }
+});
+  </script>
+</body>
+</html>

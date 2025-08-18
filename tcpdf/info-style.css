@@ -1,0 +1,264 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    color: #222;
+    line-height: 1.6;
+}
+
+a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover, a:focus {
+  color: #ffffff;
+  outline: none;
+}
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
+/* Header */
+.main-header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 45px;
+  width: auto;
+  transform: translateY(20px);
+  animation: slide-in 1s ease forwards;
+  animation-delay: 0.3s;
+}
+.site-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #222;
+  white-space: nowrap;
+}
+
+/* Navigation links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #ff2e2e;
+}
+
+/* Mobile Toggle Button */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu-toggle span {
+  height: 3px;
+  width: 100%;
+  background: #333;
+  border-radius: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    border-top: 1px solid #ddd;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+}
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Main Content Area */
+.about {
+    padding: 60px 20px;
+    background-color: #f7f7f7;
+    text-align: center;
+}
+
+.about h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.info {
+    background-color: #ffffff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.info p, .info li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #333;
+}
+
+.info ul {
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+/* Links inside content */
+.info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.info a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer.footer {
+  background: #222;
+  color: #eee;
+  padding: 30px 20px 10px;
+  font-size: 0.9rem;
+  user-select: none;
+}
+.footer-section {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.footer-section.left ul {
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.footer-section.left ul li a {
+  color: #ccc;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+.footer-section.left ul li a:hover,
+.footer-section.left ul li a:focus {
+  color: #ff2e2e;
+  outline: none;
+}
+.footer-section.center,
+.footer-section.right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #ddd;
+  justify-content: center;
+}
+.social-icon {
+  color: #ffffff;
+  font-size: 1.8rem;
+  transition: color 0.3s ease;
+}
+.social-icon:hover, .social-icon:focus {
+  color: #ff2e2e;
+  outline: none;
+}
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+  user-select: none;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .info {
+        padding: 20px;
+    }
+
+    .about {
+        padding: 40px 15px;
+    }
+}

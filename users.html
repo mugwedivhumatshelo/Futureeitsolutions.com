@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Manage Users | Futuree IT Solutions</title>
+<link rel="icon" href="img/hi (1).png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  .main-header { background:#fff; border-bottom:1px solid #ccc; padding:10px 20px; position:sticky; top:0; z-index:999; }
+  .nav-container { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; }
+  .logo-title { display:flex; align-items:center; gap:10px; }
+  .logo { height:45px; width:auto; }
+  .site-title { font-size:1.4rem; font-weight:bold; color:#222; }
+  .nav-links { display:flex; gap:20px; list-style:none; padding:0; margin:0; }
+  .nav-links li a { text-decoration:none; color:#000; font-weight:600; transition:color 0.3s; }
+  .nav-links li a:hover { color:#ff2e2e; }
+  .menu-toggle { display:none; flex-direction:column; justify-content:space-between; width:25px; height:18px; background:none; border:none; cursor:pointer; padding:0; }
+  .menu-toggle span { height:3px; width:100%; background:#ff2e2e; border-radius:2px; }
+  @media(max-width:768px) { .nav-links { display:none; flex-direction:column; width:100%; background:#fff; position:absolute; top:65px; left:0; border-top:1px solid #ddd; } .nav-links.open { display:flex; } .menu-toggle { display:flex; } }
+
+  /* User table */
+  #usersTable { width:100%; border-collapse:collapse; margin-top:20px; }
+  #usersTable th, #usersTable td { border:1px solid #ddd; padding:10px; text-align:left; }
+  #usersTable th { background:#007bff; color:white; }
+  .btn-delete { background:#dc3545; color:white; padding:5px 10px; border:none; border-radius:4px; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<header class="main-header">
+  <div class="nav-container">
+    <div class="logo-title">
+      <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+      <span class="site-title">Futuree IT Solutions - Admin</span>
+    </div>
+    <nav role="navigation" aria-label="Main Navigation">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="admin.html">Dashboard</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="#" id="logoutBtn">Logout</a></li>
+      </ul>
+    </nav>
+    <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links" id="menuToggleBtn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<h1 style="text-align:center; margin-top:20px;">Manage Users</h1>
+
+<table id="usersTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="usersBody">
+    <tr><td colspan="4">Loading users...</td></tr>
+  </tbody>
+</table>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey:"AIzaSyD2lyHJnzCJ3SQ_F0c6fI93x9zQ44ctqTc",
+  authDomain:"login-auth-d702f.firebaseapp.com",
+  projectId:"login-auth-d702f",
+  storageBucket:"login-auth-d702f.appspot.com",
+  messagingSenderId:"562569000961",
+  appId:"1:562569000961:web:0952a9f12b6b8a6c1e6800"
+};
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const usersBody = document.getElementById("usersBody");
+const logoutBtn = document.getElementById("logoutBtn");
+
+// Auth + admin check
+auth.onAuthStateChanged(async user => {
+  if(!user){ window.location.href="login.html"; return; }
+  const doc = await db.collection("users").doc(user.uid).get();
+  if(!doc.exists || doc.data().role!=="admin"){ alert("Access denied."); window.location.href="login.html"; return; }
+  loadUsers();
+});
+
+logoutBtn.onclick = ()=> auth.signOut().then(()=> location.href="index.html");
+
+function loadUsers(){
+  db.collection("users").onSnapshot(snapshot=>{
+    usersBody.innerHTML="";
+    if(snapshot.empty){ usersBody.innerHTML="<tr><td colspan='4'>No users found.</td></tr>"; return; }
+    snapshot.docs.forEach(doc=>{
+      const data=doc.data();
+      const tr=document.createElement("tr");
+      tr.innerHTML=`
+        <td>${data.name||"-"}</td>
+        <td>${data.email||"-"}</td>
+        <td>${data.role||"-"}</td>
+        <td><button class="btn-delete" onclick="deleteUser('${doc.id}')">Delete</button></td>
+      `;
+      usersBody.appendChild(tr);
+    });
+  });
+}
+
+async function deleteUser(uid){
+  if(!confirm("Are you sure you want to delete this user?")) return;
+  await db.collection("users").doc(uid).delete();
+}
+</script>
+
+<script>
+const menuToggleBtn=document.getElementById('menuToggleBtn');
+const navLinks=document.getElementById('nav-links');
+menuToggleBtn.addEventListener('click', e=>{ e.stopPropagation(); navLinks.classList.toggle('open'); });
+document.addEventListener('click', e=>{ if(!navLinks.contains(e.target)&&!menuToggleBtn.contains(e.target)){ navLinks.classList.remove('open'); } });
+</script>
+
+</body>
+</html>

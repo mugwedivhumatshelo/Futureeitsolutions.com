@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Futuree IT Solutions</title>
+  <link rel="icon" href="img/hi (1).png" type="image/png">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="main-header">
+    <div class="nav-container">
+      <div class="logo-title">
+        <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+        <span class="site-title">Futuree IT Solutions</span>
+      </div>
+
+      <nav role="navigation" aria-label="Main Navigation">
+        <ul id="nav-links" class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="explore.html">Explore Projects</a></li>
+          <li><a href="cart.html">Cart <span id="cartCount">0</span></a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links" id="menuToggleBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div id="userInfoContainer" style="margin-left:20px;"></div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <h2>Shop Products</h2>
+  <div class="controls" style="display:flex; justify-content:space-between; margin:20px 0;">
+    <input type="text" id="searchInput" placeholder="Search products..." style="padding:5px 10px; font-size:16px;" />
+    <select id="sortSelect" style="padding:5px 10px; font-size:16px;">
+      <option value="">Sort by</option>
+      <option value="name-asc">Name A → Z</option>
+      <option value="name-desc">Name Z → A</option>
+      <option value="price-asc">Price Low → High</option>
+      <option value="price-desc">Price High → Low</option>
+    </select>
+  </div>
+
+  <!-- Products -->
+  <div class="product-grid" id="productGrid">Loading products...</div>
+  <div class="pagination" id="pagination"></div>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-section left">
+      <ul>
+        <li><a href="Privacy.html">Privacy</a></li>
+        <li><a href="Terms of service.html">Terms</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section center">
+      <p>Request a Quote:</p>
+      <a href="https://api.whatsapp.com/send?phone=0723386439" class="social-icon whatsapp" target="_blank"><i class="fab fa-whatsapp-square"></i></a>
+    </div>
+
+    <div class="footer-section right">
+      <p>Follow Us:</p>
+      <a href="https://twitter.com/FutureeITSoltns" class="social-icon twitter" target="_blank"><i class="fab fa-twitter-square"></i></a>
+      <a href="https://linkedin.com/in/vhumatshelo-mugwedi-9540631a4" class="social-icon linkedin" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://facebook.com/FutureeI.Tsolutions2021" class="social-icon facebook" target="_blank"><i class="fab fa-facebook-square"></i></a>
+      <a href="https://instagram.com/futureei.tsolutions/" class="social-icon instagram" target="_blank"><i class="fab fa-instagram-square"></i></a>
+      <a href="https://youtube.com/channel/UC19Yvp1RCWXL54iKGkfM1oQ" class="social-icon youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Futuree IT Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2lyHJnzCJ3SQ_F0c6fI93x9zQ44ctqTc",
+      authDomain: "login-auth-d702f.firebaseapp.com",
+      projectId: "login-auth-d702f",
+      storageBucket: "login-auth-d702f.appspot.com",
+      messagingSenderId: "562569000961",
+      appId: "1:562569000961:web:0952a9f12b6b8a6c1e6800"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let currentUserEmail = "guest";
+    let isAdmin = false;
+    const productGrid = document.getElementById("productGrid");
+    const pagination = document.getElementById("pagination");
+
+    let allProducts = [];
+    let filteredProducts = [];
+
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navLinks = document.getElementById('nav-links');
+    if(menuToggleBtn && navLinks){
+      menuToggleBtn.addEventListener('click',()=>{ navLinks.classList.toggle('open'); });
+      document.addEventListener('click',(e)=>{ if(!navLinks.contains(e.target) && !menuToggleBtn.contains(e.target)){ navLinks.classList.remove('open'); } });
+    }
+
+    // Fetch products from Firestore
+    async function loadProductsFromFirestore(){
+      productGrid.innerHTML="Loading products...";
+      try{
+        const snapshot = await db.collection("products").where("available","==",true).get();
+        allProducts = snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
+        filteredProducts = [...allProducts];
+        renderProducts(1);
+      }catch(err){
+        productGrid.innerHTML="Error loading products.";
+        console.error(err);
+      }
+    }
+
+    auth.onAuthStateChanged(async (user)=>{
+      const userInfoContainer = document.getElementById("userInfoContainer");
+      if(user){
+        currentUserEmail = user.email;
+        try{
+          const docRef = db.collection("users").doc(user.uid);
+          const docSnap = await docRef.get();
+          if(docSnap.exists && docSnap.data().role==="admin") isAdmin=true;
+        }catch(e){ console.error(e); }
+        userInfoContainer.innerHTML = `<span style="color:white;">${currentUserEmail}</span>
+                                       <button id="logoutBtn">Logout</button>`;
+        document.getElementById("logoutBtn").addEventListener("click", async()=>{
+          await auth.signOut();
+          alert("Logged out!");
+          window.location.href="login.html";
+        });
+      }
+      loadProductsFromFirestore();
+      updateCartCount();
+      window.addEventListener("storage", (event)=>{
+        if(event.key===`cart_${currentUserEmail}`) updateCartCount();
+      });
+    });
+
+    function renderProducts(page){
+      const perPage = 12;
+      const start = (page-1)*perPage;
+      const paginated = filteredProducts.slice(start, start+perPage);
+      productGrid.innerHTML="";
+      paginated.forEach(product=>{
+        const div = document.createElement("div");
+        div.className="product";
+        div.innerHTML = `
+          <img src="${product.image||'https://via.placeholder.com/150'}" alt="${product.name}" style="width:100%; height:auto;">
+          <h3>${product.name}</h3>
+          <p>R${Number(product.price).toFixed(2)}</p>
+          <button class="btn" onclick="addToCart('${product.id}')">Add to Cart</button>
+          ${isAdmin?`
+            <button class="btn admin-btn" onclick="editProduct('${product.id}')">Edit</button>
+            <button class="btn admin-btn" onclick="deleteProduct('${product.id}')">Delete</button>`:""}
+        `;
+        productGrid.appendChild(div);
+      });
+      renderPagination(page);
+    }
+
+    function renderPagination(currentPage){
+      const totalPages = Math.ceil(filteredProducts.length/12);
+      pagination.innerHTML="";
+      for(let i=1;i<=totalPages;i++){
+        const btn=document.createElement("button");
+        btn.textContent=i;
+        btn.onclick = ()=> renderProducts(i);
+        if(i===currentPage) btn.style.fontWeight="bold";
+        pagination.appendChild(btn);
+      }
+    }
+
+    function addToCart(productId){
+      const product = allProducts.find(p=>p.id===productId);
+      const cart = JSON.parse(localStorage.getItem(`cart_${currentUserEmail}`)||"[]");
+      cart.push({id:product.id,name:product.name, price:product.price});
+      localStorage.setItem(`cart_${currentUserEmail}`, JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount(){
+      const cart = JSON.parse(localStorage.getItem(`cart_${currentUserEmail}`)||"[]");
+      const cartCount = document.getElementById("cartCount");
+      if(cartCount) cartCount.textContent = cart.length;
+    }
+
+    function editProduct(id){
+      const product = allProducts.find(p=>p.id===id);
+      if(!product) return;
+      const newName = prompt("Enter new product name:", product.name);
+      const newPrice = parseFloat(prompt("Enter new price:", product.price));
+      if(newName && !isNaN(newPrice)){
+        db.collection("products").doc(id).update({name:newName, price:newPrice}).then(()=>{
+          alert("Product updated!");
+          loadProductsFromFirestore();
+        });
+      }
+    }
+
+    function deleteProduct(id){
+      if(confirm("Are you sure you want to delete this product?")){
+        db.collection("products").doc(id).delete().then(()=>{
+          alert("Product deleted!");
+          loadProductsFromFirestore();
+        });
+      }
+    }
+
+    // Search
+    document.getElementById("searchInput").addEventListener("input",(e)=>{
+      const term = e.target.value.toLowerCase();
+      filteredProducts = allProducts.filter(p => p.name.toLowerCase().includes(term));
+      renderProducts(1);
+    });
+
+    // Sort
+    document.getElementById("sortSelect").addEventListener("change",(e)=>{
+      const value = e.target.value;
+      if(value==="name-asc") filteredProducts.sort((a,b)=>a.name.localeCompare(b.name));
+      if(value==="name-desc") filteredProducts.sort((a,b)=>b.name.localeCompare(a.name));
+      if(value==="price-asc") filteredProducts.sort((a,b)=>a.price-b.price);
+      if(value==="price-desc") filteredProducts.sort((a,b)=>b.price-a.price);
+      renderProducts(1);
+    });
+  </script>
+</body>
+</html>

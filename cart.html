@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart | Futuree IT Solutions</title>
+  <link rel="icon" href="img/hi (1).png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f6f7f9; margin: 0; }
+    .container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+    h1 { text-align: center; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    .actions button { padding: 5px 10px; margin: 0 2px; cursor: pointer; }
+    .summary { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .btn { padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    .btn-clear { background: #ff2c2c; color: #fff; }
+    .btn-whatsapp { background: #25D366; color: #fff; }
+    .btn-payfast { background: #ff2c2c; color: #fff; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Your Cart</h1>
+  <table id="cartTable">
+    <thead>
+      <tr><th>Product</th><th>Quantity</th><th>Price</th><th>Action</th></tr>
+    </thead>
+    <tbody id="cartBody"></tbody>
+  </table>
+
+  <div class="summary">
+    <div id="totalPrice">Total: R0.00</div>
+    <div>
+      <button class="btn btn-clear" id="clearBtn">Clear Cart</button>
+      <button class="btn btn-whatsapp" id="waBtn"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+      <button class="btn btn-payfast" id="payfastBtn"><i class="fa-regular fa-credit-card"></i> PayFast</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+      apiKey: "AIzaSyD2lyHJnzCJ3SQ_F0c6fI93x9zQ44ctqTc",
+      authDomain: "login-auth-d702f.firebaseapp.com",
+      projectId: "login-auth-d702f",
+      storageBucket: "login-auth-d702f.appspot.com",
+      messagingSenderId: "562569000961",
+      appId: "1:562569000961:web:0952a9f12b6b8a6c1e6800"
+    };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  let currentUserEmail = 'guest';
+  const cartBody = document.getElementById('cartBody');
+  const totalPriceEl = document.getElementById('totalPrice');
+
+  auth.onAuthStateChanged(user => { 
+    currentUserEmail = user?.email || 'guest'; 
+    renderCart(); 
+  });
+
+  function getCart() {
+    return JSON.parse(localStorage.getItem(`cart_${currentUserEmail}`) || '[]');
+  }
+  function setCart(items) {
+    localStorage.setItem(`cart_${currentUserEmail}`, JSON.stringify(items));
+  }
+
+  function renderCart() {
+    const items = getCart();
+    cartBody.innerHTML = '';
+    if(items.length === 0){
+      cartBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:20px; color:#888">Your cart is empty.</td></tr>';
+      totalPriceEl.textContent = 'Total: R0.00';
+      return;
+    }
+
+    const grouped = {};
+    items.forEach(i => { 
+      const key = `${i.name}_${i.price}`; 
+      grouped[key] = grouped[key] || {...i, qty:0}; 
+      grouped[key].qty +=1; 
+    });
+
+    Object.values(grouped).forEach((item, index)=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${item.name}</td>
+                      <td>${item.qty}</td>
+                      <td>R${(item.price*item.qty).toFixed(2)}</td>
+                      <td class='actions'>
+                        <button data-index='${index}' data-action='remove'>Remove</button>
+                      </td>`;
+      cartBody.appendChild(tr);
+    });
+
+    totalPriceEl.textContent = 'Total: R' + items.reduce((s,i)=>s+i.price,0).toFixed(2);
+
+    document.querySelectorAll('.actions button').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const items = getCart();
+        items.splice(btn.dataset.index,1);
+        setCart(items);
+        renderCart();
+      });
+    });
+  }
+
+  document.getElementById('clearBtn').addEventListener('click',()=>{
+    if(confirm('Clear cart?')){
+      localStorage.removeItem(`cart_${currentUserEmail}`);
+      renderCart();
+    }
+  });
+
+  document.getElementById('waBtn').addEventListener('click',()=>{
+    const items = getCart(); 
+    if(!items.length){alert('Cart is empty'); return;}
+    let msg = 'Hello, I want the following items:\n';
+    items.forEach(i=> msg+=`• ${i.name} - R${i.price}\n`);
+    window.open(`https://api.whatsapp.com/send?phone=0723386439&text=${encodeURIComponent(msg)}`,'_blank');
+  });
+
+  document.getElementById('payfastBtn').addEventListener('click',()=>{
+    const items = getCart(); 
+    if(!items.length){alert('Cart is empty'); return;}
+    
+    // Save cart for invoice
+    localStorage.setItem(`cart_${currentUserEmail}_for_invoice`, JSON.stringify(items));
+
+    // Redirect to sandbox PayFast
+    const total = items.reduce((s,i)=>s+i.price,0).toFixed(2);
+    const payfastURL = `https://sandbox.payfast.co.za/eng/process?merchant_id=10000100&merchant_key=46f0cd694581a&amount=${total}&item_name=Futuree+IT+Cart&return_url=${encodeURIComponent(window.location.origin+'/thankyou.php?email='+currentUserEmail)}&cancel_url=${encodeURIComponent(window.location.href)}&notify_url=${encodeURIComponent(window.location.origin+'/payfast_notify.php')}`;
+    
+    window.location.href = payfastURL;
+  });
+
+  renderCart();
+</script>
+
+</body>
+</html>

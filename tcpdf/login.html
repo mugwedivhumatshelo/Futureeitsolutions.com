@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login | Futuree IT Solutions</title>
+<link rel="icon" href="img/hi (1).png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+  /* --- Header & Nav --- */
+  .main-header { background: #fff; border-bottom: 1px solid #ccc; padding: 10px 20px; position: sticky; top: 0; z-index: 999; }
+  .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+  .logo-title { display: flex; align-items: center; gap: 10px; }
+  .logo { height: 45px; width: auto; transform: translateY(20px); animation: slide-in 1s ease forwards; animation-delay: 0.3s; }
+  .site-title { font-size: 1.4rem; font-weight: bold; color: #222; white-space: nowrap; }
+  .nav-links { display: flex; gap: 20px; list-style: none; padding: 0; margin: 0; }
+  .nav-links li a { text-decoration: none; color: #000000; font-weight: 600; transition: color 0.3s ease; }
+  .nav-links li a:hover { color: #ff2e2e; }
+  .menu-toggle { display: none; flex-direction: column; justify-content: space-between; width: 25px; height: 18px; background: none; border: none; cursor: pointer; padding: 0; }
+  .menu-toggle span { height: 3px; width: 100%; background: #ff2e2e; border-radius: 2px; }
+  @media (max-width: 768px) { .nav-links { display: none; flex-direction: column; width: 100%; background: #fff; position: absolute; top: 65px; left: 0; border-top: 1px solid #ddd; } .nav-links.open { display: flex; } .menu-toggle { display: flex; } }
+  @keyframes slide-in { 0% { transform: translateX(-100px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+
+  /* --- Login Container --- */
+  .login-container { background: rgb(39, 37, 37); padding: 30px 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px; text-align: center; margin: 50px auto; }
+  a { color: #ffffff; text-decoration: none; transition: color 0.3s ease; }
+  a:hover, a:focus { color: #ff3e3e; outline: none; }
+  h1 { margin-bottom: 24px; color: #ff3838; }
+  input[type="email"], input[type="password"] { width: 100%; padding: 12px 15px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; transition: border-color 0.3s; }
+  input[type="email"]:focus, input[type="password"]:focus { border-color: #ff3232; outline: none; }
+  button { background-color: #ff3030; color: white; border: none; padding: 12px 20px; border-radius: 5px; font-size: 1rem; cursor: pointer; width: 100%; margin-bottom: 16px; transition: background-color 0.3s; }
+  button:hover { background-color: #130f0f; }
+  .forgot-password { background: none; border: none; color: #ffffff; cursor: pointer; text-decoration: underline; font-size: 0.9rem; padding: 0; width: auto; }
+  .forgot-password:hover { color: #ff3131; }
+
+  /* --- Animated alert boxes --- */
+  .alert { padding: 12px 16px; margin-top: 10px; border-radius: 5px; opacity: 0; transform: translateY(-10px); transition: opacity 0.4s ease, transform 0.4s ease; font-size: 0.9rem; }
+  .alert.show { opacity: 1; transform: translateY(0); }
+  .alert.error { background-color: #ff4b4b; color: #fff; }
+  .alert.success { background-color: #4bb543; color: #fff; }
+
+  /* --- Footer --- */
+  footer.footer { background: #222; color: #eee; padding: 30px 20px 10px; font-size: 0.9rem; user-select: none; }
+  .footer-section { display: flex; justify-content: center; gap: 40px; margin-bottom: 15px; flex-wrap: wrap; }
+  .footer-section.left ul { display: flex; gap: 20px; padding: 0; margin: 0; list-style: none; }
+  .footer-section.left ul li a { color: #ccc; font-weight: 600; font-size: 0.95rem; transition: color 0.3s ease; }
+  .footer-section.left ul li a:hover, .footer-section.left ul li a:focus { color: #ff2727; outline: none; }
+  .footer-section.center, .footer-section.right { display: flex; align-items: center; gap: 15px; font-weight: 600; font-size: 1.1rem; color: #ddd; justify-content: center; }
+  .social-icon { color: #ffffff; font-size: 1.8rem; transition: color 0.3s ease; }
+  .social-icon:hover, .social-icon:focus { color: #ff2b23; outline: none; }
+  .footer-bottom { border-top: 1px solid #444; padding-top: 10px; text-align: center; font-size: 0.8rem; color: #999; user-select: none; }
+</style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="main-header">
+    <div class="nav-container">
+      <div class="logo-title">
+        <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+        <span class="site-title">Futuree IT Solutions</span>
+      </div>
+      <nav role="navigation" aria-label="Main Navigation">
+        <ul id="nav-links" class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="login.html">Shop</a></li>
+          <li><a href="explore.html">Explore Projects</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links" id="menuToggleBtn">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Login Container -->
+  <div class="login-wrapper">
+    <div class="login-container">
+      <h1>Login</h1>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <div id="loginError" class="alert error"></div>
+        <div id="loginSuccess" class="alert success"></div>
+      </form>
+      <button class="forgot-password" id="forgotBtn">Forgot Password?</button>
+      <p>Don't have an account? <a href="register.html">Register here</a></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-section left">
+      <ul>
+        <li><a href="Privacy.html">Privacy</a></li>
+        <li><a href="Terms of service.html">Terms</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-section center">
+      <p>Request a Quote:</p>
+      <a href="https://api.whatsapp.com/send?phone=0723386439" class="social-icon whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp-square"></i>
+      </a>
+    </div>
+    <div class="footer-section right">
+      <p>Follow Us:</p>
+      <a href="https://twitter.com/FutureeITSoltns" class="social-icon twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter-square"></i></a>
+      <a href="https://linkedin.com/in/vhumatshelo-mugwedi-9540631a4" class="social-icon linkedin" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+      <a href="https://facebook.com/FutureeI.Tsolutions2021" class="social-icon facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-square"></i></a>
+      <a href="https://instagram.com/futureei.tsolutions/" class="social-icon instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram-square"></i></a>
+      <a href="https://youtube.com/channel/UC19Yvp1RCWXL54iKGkfM1oQ" class="social-icon youtube" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Futuree IT Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD2lyHJnzCJ3SQ_F0c6fI93x9zQ44ctqTc",
+      authDomain: "login-auth-d702f.firebaseapp.com",
+      projectId: "login-auth-d702f",
+      storageBucket: "login-auth-d702f.appspot.com",
+      messagingSenderId: "562569000961",
+      appId: "1:562569000961:web:0952a9f12b6b8a6c1e6800"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+    const loginSuccess = document.getElementById("loginSuccess");
+    const forgotBtn = document.getElementById("forgotBtn");
+
+    function showMessage(element, message) {
+      element.textContent = message;
+      element.classList.add('show');
+      setTimeout(() => {
+        element.classList.remove('show');
+        element.textContent = '';
+      }, 4000);
+    }
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginError.textContent = "";
+      loginSuccess.textContent = "";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        showMessage(loginError, "Please enter both email and password.");
+        return;
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        let role = "user";
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData.role) role = userData.role;
+        } else {
+          await setDoc(docRef, { email: user.email, role: "user", createdAt: new Date().toISOString() });
+        }
+
+        showMessage(loginSuccess, "Login successful! Redirecting...");
+        setTimeout(() => {
+          if (role === "admin") window.location.href = "admin.html";
+          else window.location.href = "shop.html";
+        }, 1000);
+      } catch (error) {
+        showMessage(loginError, error.message);
+      }
+    });
+
+    forgotBtn.addEventListener("click", async () => {
+      loginError.textContent = "";
+      loginSuccess.textContent = "";
+      const email = prompt("Please enter your email to reset your password:");
+      if (!email) return;
+      try {
+        await sendPasswordResetEmail(auth, email.trim());
+        showMessage(loginSuccess, `Password reset email sent to ${email}. Check your inbox.`);
+      } catch (error) {
+        showMessage(loginError, error.message);
+      }
+    });
+
+    // Hamburger menu
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navLinks = document.getElementById('nav-links');
+    menuToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+      menuToggleBtn.setAttribute('aria-expanded', !expanded);
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggleBtn.setAttribute('aria-expanded', false);
+      });
+    });
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+        navLinks.classList.remove('open');
+        menuToggleBtn.setAttribute('aria-expanded', false);
+      }
+    });
+  </script>
+</body>
+</html>

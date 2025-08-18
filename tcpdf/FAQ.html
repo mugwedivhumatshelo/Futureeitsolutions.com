@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FAQ - Futuree IT Solutions</title>
+  <link rel="stylesheet" href="info-style.css"/>
+  <link rel="icon" href="img/hi (1).png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+</head>
+<body>
+<!-- Header -->
+<header class="main-header">
+  <div class="nav-container">
+    <div class="logo-title">
+      <img src="img/hi (1).png" alt="Futuree IT Solutions Logo" class="logo" />
+      <span class="site-title">Futuree IT Solutions</span>
+    </div>
+
+    <nav role="navigation" aria-label="Main Navigation">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Shop</a></li>
+        <li><a href="explore.html">Explore Projects</a></li>
+      </ul>
+    </nav>
+
+    <button
+      class="menu-toggle"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="nav-links"
+      id="menuToggleBtn"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
+
+
+<section class="about">
+  <h2>Frequently Asked Questions (FAQ)</h2>
+  <div class="info">
+    <p><strong>Q: What services do you offer?</strong><br>
+    A: We provide IT support, mobile and PC repairs, printing, graphics design, and internet cafe services.</p>
+
+    <p><strong>Q: Do you offer on-site services?</strong><br>
+    A: Yes, depending on your location within Thohoyandou and surrounding areas.</p>
+
+    <p><strong>Q: What are your business hours?</strong><br>
+    A: Monday–Friday: 8:00–17:00, Saturday: 9:00–14:00. Closed on Sundays.</p>
+
+    <p><strong>Q: Do you repair Apple devices?</strong><br>
+    A: Yes, we provide repair services for most mobile and computer brands, including Apple.</p>
+
+    <p><strong>Q: How do I request a quote?</strong><br>
+    A: Use our <a href="https://api.whatsapp.com/send?phone=0723386439">WhatsApp contact</a> to request a quote or call us directly.</p>
+  </div>
+</section>
+
+<footer class="footer" role="contentinfo">
+    <div class="footer-section left">
+      <ul>
+        <li><a href="Privacy.html">Privacy</a></li>
+        <li><a href="Terms of service.html">Terms</a></li>
+        <li><a href="FAQ.html">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section center">
+      <p>Request a Quote:</p>
+      <a
+        href="https://api.whatsapp.com/send?phone=0723386439"
+        class="social-icon whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="WhatsApp"
+      >
+        <i class="fab fa-whatsapp-square"></i>
+      </a>
+    </div>
+
+    <div class="footer-section right">
+      <p>Follow Us:</p>
+      <a
+        href="https://twitter.com/FutureeITSoltns"
+        class="social-icon twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Twitter"
+      >
+        <i class="fab fa-twitter-square"></i>
+      </a>
+      <a
+        href="https://linkedin.com/in/vhumatshelo-mugwedi-9540631a4"
+        class="social-icon linkedin"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+      >
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a
+        href="https://facebook.com/FutureeI.Tsolutions2021"
+        class="social-icon facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Facebook"
+      >
+        <i class="fab fa-facebook-square"></i>
+      </a>
+      <a
+        href="https://instagram.com/futureei.tsolutions/"
+        class="social-icon instagram"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <i class="fab fa-instagram-square"></i>
+      </a>
+      <a
+        href="https://youtube.com/channel/UC19Yvp1RCWXL54iKGkfM1oQ"
+        class="social-icon youtube"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="YouTube"
+      >
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Futuree IT Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+  <script>
+    // Hamburger menu toggle
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navLinks = document.getElementById('nav-links');
+
+    // Toggle open/close on button click
+    menuToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent the click from bubbling to document
+    const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
+    menuToggleBtn.setAttribute('aria-expanded', !expanded);
+    navLinks.classList.toggle('open');
+  });
+
+    // Close menu when clicking any nav link
+    navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuToggleBtn.setAttribute('aria-expanded', false);
+  });
+});
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+    navLinks.classList.remove('open');
+    menuToggleBtn.setAttribute('aria-expanded', false);
+  }
+});
+  </script>
+</body>
+</html>
