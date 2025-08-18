@@ -123,7 +123,7 @@
     if(!items.length){alert('Cart is empty'); return;}
     let msg = 'Hello, I want the following items:\n';
     items.forEach(i=> msg+=`• ${i.name} - R${i.price}\n`);
-    window.open(`https://api.whatsapp.com/send?phone=0723386439&text=${encodeURIComponent(msg)}`,'_blank');
+    window.open(`https://api.whatsapp.com/send?phone=+27723386439&text=${encodeURIComponent(msg)}`,'_blank');
   });
 
   document.getElementById('payfastBtn').addEventListener('click',()=>{
